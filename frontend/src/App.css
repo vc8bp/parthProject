@@ -1,0 +1,54 @@
+:root {
+    --primary: 236, 240, 244;  
+    --hover: 240, 243, 251;     
+    --highlight: 86, 104, 243;    
+    --lightBlue: 218, 225, 243;   
+    --darkBlue: 71, 88, 184;       
+    --disabled: 71, 88, 184, 0.31;  
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.floatBox {
+    background: rgb(var(--primary));
+    min-height: 50px;
+    position: relative;
+    margin-bottom: 24px;
+    border: 1px solid #f2f4f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #b7c0ce33;
+    -webkit-box-shadow: 0 0 10px 0 rgba(183,192,206,.2);
+    overflow: hidden;
+}
+.disabled {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.5;
+}
+.disabled * {
+    pointer-events: none !important;
+}
+
+
+/* atnd calendar fix */
+
+.events {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.events .ant-badge-status {
+    width: 100%;
+    overflow: hidden;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.notes-month {
+    font-size: 28px;
+    text-align: center;
+}
+.notes-month section {
+    font-size: 28px;
+}
