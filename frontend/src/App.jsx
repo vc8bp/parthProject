@@ -14,6 +14,8 @@ import ForgotPasswordForm from './pages/auth/ForgotPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import Profile from "./pages/profile/Profile"
 import Products from './pages/products/Products'
+import ProductPage from './pages/SingleProduct/SingleProduct'
+import CartPage from './pages/cart/Cart'
 
 function PublicRoute() {
   const user = useSelector(d => d.user.info)
@@ -42,11 +44,14 @@ function App() {
           <Routes>
             <Route element={<PrivateRoute/>} >
               <Route path='/' element={<Dashboard/>} />
+              <Route path='/profile' element={<Profile/>} />
+              <Route path='/product/:id' element={<ProductPage/>} />
+              <Route path='/cart' element={<CartPage/>} />
+
             </Route>
 
             <Route element={<AdminRoutes/>}>
               <Route path='/users' element={<Employes/>} />
-              <Route path='/profile' element={<Profile/>} />
               <Route path='/products' element={<Products/>} />
             </Route>
 

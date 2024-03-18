@@ -13,17 +13,14 @@ import { uploadWithResize } from "../utils/compressImage.js";
 env.config()
 
 export const register = async (req, res) => {
-    // console.log("Hello world")
-    // const userType = req.user.type
-    // console.log(userType)
-    // if(!isValidBody(req, res, ["firstName", "lastName", "email", "number", "password", "role"])) return
-    // if (req.body.password.length < 5 || req.body.password.length > 16 ) {
-    //     return res.status(400).json({sucess: false,message: "password length should be in range of 5 to 16 charecter"})
-    // };
+    console.log("Hello world")
+    const userType = req.user.type
+    console.log(userType)
+    if(!isValidBody(req, res, ["firstName", "lastName", "email", "number", "password", "role"])) return
 
-
-    // if(!userRoles[req.user.type].includes(req.body.type)) return res.status(405).json({message: "Unauthorized: You do not have the privilege to create an account for a user with a higher role."})
-
+    if (req.body.password.length < 5 || req.body.password.length > 16 ) {
+        return res.status(400).json({sucess: false,message: "password length should be in range of 5 to 16 charecter"})
+    };
 
     const newUser = new User({
       firstName: req.body.firstName,
@@ -100,14 +97,7 @@ export const getAllEmployee = async (req, res) => {
 export const createOrUpdateAddress = async (req, res) => {
 
   try {
-    let idToUpdate = req.user.id;
-
-    if(req.body._id){
-      const user = await User.findById(req.body._id)
-      console.log({mytype: req.user.type, typeIAmUpdating: user.type})
-      if(req.body._id !== user._id) return res.status(403).json({message: "You are not allowed to acces this Feature"})
-      idToUpdate  = req.body._id
-    }
+    let idToUpdate = req.body._id ? req.body._id : req.user.id;
     
     const existingAddress = await Address.findOne({ user: new mongoose.Types.ObjectId(idToUpdate) })
     console.log(idToUpdate)
@@ -148,14 +138,7 @@ export const updateProfile = async (req, res) => {
       return res.status(200).json({message: "Password updated successfully"})
     }
 
-    let idToUpdate = req.user.id
-    console.log(`Hemloo ${req.body._id}`)
-    if(req.body._id){
-      const user = await User.findById(req.body._id, {type: 1})
-      console.log(user)
-      if(!userRoles[req.user.type].includes(user.type)) return res.status(403).json({message: "You are not allowed to acces this profile"})
-      idToUpdate = req.body._id
-    }
+    let idToUpdate = req.body._id ? req.body._id : req.user.id;
 
     const user = await User.findByIdAndUpdate(idToUpdate, { $set: req.body }, { new: true, fields: { firstName: 1, lastName: 1, email: 1, number: 1 } });
 
@@ -170,19 +153,6 @@ export const updateProfile = async (req, res) => {
 }
 
 
-const handleFileUpload = async (file, destination) => {
-  try {
-    const uploadPath = path.join(destination, file.filename);
-    const imageBuffer = Buffer.from(file.base64, 'base64');
-    await fs.writeFileSync(uploadPath, imageBuffer);
-    return file.filename;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to handle file upload');
-  }
-};
-
-
 export const changeProfile = async (req, res) => {
   try {
     if (!req.body.avatar) return res.status(400).json({ error: 'Please upload a Image' });
@@ -194,8 +164,7 @@ export const changeProfile = async (req, res) => {
  
     const imgName = await uploadWithResize(mainDataString, "static/avatar/", `avatar-${userId}`)
 
-  
-    const updatedUser = await User.findByIdAndUpdate( userId, { avatar: imgName }, { new: true } );
+    await User.findByIdAndUpdate( userId, { avatar: imgName }, { new: true } );
 
     res.status(200).json({res: imgName, message: "profile updated Successfully"})
   } catch (error) {

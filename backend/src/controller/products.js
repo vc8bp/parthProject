@@ -1,8 +1,9 @@
 import Product from "../models/Product.js";
+import mongoose from "mongoose"
 import { uploadImageToCloudinary } from "../utils/CloudinaryMethods.js"
 
-export const addProduct = async () => {
-    const id = mongoose.Types.ObjectId()
+export const addProduct = async (req, res) => {
+    const id = new mongoose.Types.ObjectId()
     try {
       const image = await uploadImageToCloudinary(req.body.img, id);
       req.body.img = image.url;
@@ -11,7 +12,7 @@ export const addProduct = async () => {
     } catch (err) {
       if (err.name === "ValidationError") {
         if (err.name == 'ValidationError') {
-          for (field in err.errors) {
+          for (const field in err.errors) {
             return res.status(400).json({sucess: false,message: err.errors[field].message}); 
           }
         }
@@ -64,6 +65,9 @@ export const getProducts = async (req, res) => {
       } else if (qsort === "topreviewed"){
         query.sort({ ratingsQuantity: -1 })
       }
+
+      console.log(filterArr)
+
       query.skip(startIndex).limit(limit)
 
       const products = await query.exec()
@@ -74,4 +78,20 @@ export const getProducts = async (req, res) => {
     } catch (error) {
       res.status(500).json({message: "failed to get Product" });
     }
+}
+
+export const getProductInfo = async (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(404).json("Invalid Product ID");
+  }
+
+  try {
+    const savedProducts = await Product.findById(req.params.id);
+    if(!savedProducts) {
+      return res.status(404).json({message: "Product not Foundd"});
+    }
+      res.status(200).json(savedProducts)
+  } catch (err) {
+    res.status(500).json({message: "internal server Error"});
+  }
 }

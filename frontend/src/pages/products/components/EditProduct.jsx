@@ -128,7 +128,7 @@ const Tag = styled.div`
 `
 
 function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
-  const DefaultValues = {title: "", productno: "", size: [], color: [], desc: "",categories: [], quantity: "", price: "", img: null}
+  const DefaultValues = {title: "", productno: "", size: "", color: "", desc: "",categories: [], quantity: "", price: "", img: null}
   
   const dispatch = useDispatch();
   const [Product, setProduct] = useState(DefaultValues)
@@ -177,7 +177,7 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
     if(!EditProductInfo) {
         try {
-            const res = await userRequest.post(`/product`, product);
+            const res = await userRequest.post(`/product`, Product);
             setIsOpen(false)
         } catch (error) {
             console.log(error)
@@ -236,30 +236,12 @@ function EditProducts({isOpen, setIsOpen, EditProductInfo, title, desc}) {
 
           <Section>
             <Left><label>Product Size</label></Left>
-            <Right>
-              <TagSection>
-                {Product?.size?.map((s) => {
-                  return <Tag key={s}>
-                  <span>{s}</span><div onClick={() =>handleDelete("size", s)}><CloseOutlinedIcon/></div>
-                </Tag>
-                })}
-                <Input placeholder='Sizes (Write and press Enter)'  name="size" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "size")}}/>
-              </TagSection>
-            </Right>
+            <Right> <Input name="size" value={Product.size} onChange={e => handleChange(e)} required/> </Right>
           </Section>
 
           <Section>
             <Left><label>Product Color</label></Left>
-            <Right>
-              <TagSection>
-                {Product?.color?.map((s) => {
-                  return <Tag key={s} color={s}>
-                  <span >{s}</span><div onClick={() =>handleDelete("color",s)}><CloseOutlinedIcon/></div>
-                </Tag>
-                })}
-                <Input style={{height: "80px"}} type="color" placeholder='Sizes (Write and press Enter)' name="color" onKeyDown={e => {if(e.key==="Enter") handleChange(e, "color")}}/>
-              </TagSection>
-            </Right>
+            <Right> <Input style={{height: "70px"}} type='color' name="color" value={Product.color} onChange={e => handleChange(e)} required/> </Right>
           </Section>
 
           <Section>

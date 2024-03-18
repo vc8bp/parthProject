@@ -5,14 +5,14 @@ import { verifyAdmin, verifyToken } from "../middlewares/verifyToekn.js";
 
 const route = Router()
 
-route.post("/create" ,register)
+route.post("/create", verifyAdmin, register)
 route.get("/", verifyAdmin, getAllEmployee)
-route.post("/address", verifyToken, createOrUpdateAddress)
-route.put("/", verifyToken ,updateProfile)
+route.post("/address", verifyAdmin, createOrUpdateAddress)
+route.put("/", verifyAdmin, updateProfile)
 
 
 
 //profile
-route.post("/profile", verifyToken,  changeProfile)
+route.post("/profile", verifyAdmin,  changeProfile)
 
 export default route;

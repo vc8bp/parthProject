@@ -102,7 +102,7 @@ const Item = styled(Link)`
 `
 
 const NavItems = [
-    {onlyAdmin: true ,title: "Dashboard", url: "/", icon: <GridViewOutlinedIcon/>},
+    {onlyAdmin: false ,title: "Dashboard", url: "/", icon: <GridViewOutlinedIcon/>},
     {onlyAdmin: true ,title: "Users", url: "/users", icon: <BadgeIcon/>},
     {onlyAdmin: true ,title: "products", url: "/products", icon: <AccountTreeIcon/>},
 ]

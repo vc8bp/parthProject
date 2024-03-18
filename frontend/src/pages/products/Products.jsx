@@ -35,6 +35,16 @@ const ActionsContainer = styled.div`
   }
 `
 
+const ColorTag = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  >div{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+`
 
 
 
@@ -51,18 +61,21 @@ function Products() {
     }
 
     const colDefs = [
-      { title: "avatar", dataIndexr: "Image", align: "center",
-          render: (text, record) => <Avatar src={record.avatar && `${import.meta.env.VITE_BACKEND_AVATAR}/${record.avatar}`}>{`${record.firstName[0]}${record.lastName[0]}`}</Avatar>
+      { title: "no", dataIndex: "productno", },
+      { title: "Product", dataIndexr: "Image", align: "center",
+          render: (text, record) => <Avatar src={record.img} ></Avatar>
       },
       { title: "Name", dataIndex: "Name", 
-          render:(text, record) => <div style={{display: "flex", gap: "0.5rem"}}>
-            <p>{`${record.firstName} ${record.lastName}`}</p>
-            <Tag color={record.isAdmin ? "cyan" :  "blue"} >{record.isAdmin ? "Admin" : "Client"}</Tag>
-          </div>
+          render:(text, record) => <ColorTag>
+            <p>{`${record.title}`}</p>
+            <div style={{backgroundColor: record.color}} ></div>
+          </ColorTag>
       },
-      { title: "Mobile", dataIndex: "number", },
-      { title: "Email", dataIndex: "email", },
-      { title: "JoiningDate", dataIndex: "createdAt", render: (text) => new Date(text).toDateString() },
+      { title: "Size", dataIndex: "size", },
+      { title: "Quantity", dataIndex: "quantity", },
+      { title: "Purchased Count", dataIndex: "purchasedCount"},
+      { title: "Category", dataIndex: "categories",  render: (text) => text.map(e => <Tag color='blue' >{e}</Tag>)},
+      { title: "Created at", dataIndex: "createdAt", render: (text) => new Date(text).toDateString() },
       { title: "Actions", render: (_, data) => {
         return <ActionsContainer >
           <IconButton><EditNoteIcon className='edit' onClick={() => setEditProductOpen(data)} /></IconButton>
@@ -96,13 +109,13 @@ function Products() {
     return (
       <>
         <Container>
-            <h1>All Users</h1>
+            <h1>Manage Products</h1>
             <TableContainer>
               <TableFilterSection name="Employee" search={search} setSearch={setSearch} data={data} onAdd={() => setEditProductOpen(true)} onRefresh={fetchEmployees} isLoading={false} />
               <ReactTable loading={isLoading} size="middle" colDefs={colDefs} data={data} tableName="Hello wrold" />
             </TableContainer>
         </Container>
-        <EditProducts isOpen={isEditProductOpen} setIsOpen={setEditProductOpen} title="Edut Product" desc="Edit your product's information from here" />
+        <EditProducts isOpen={isEditProductOpen} setIsOpen={setEditProductOpen} title="Add Product" desc="Add your product's information from here" />
       </>
     )
 }

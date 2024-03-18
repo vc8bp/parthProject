@@ -92,7 +92,7 @@ const EditProifle = ({user, IsOther, setUser}) => {
       const { data } = await userRequest.put("/user", body)
       toast.success(data.message || "Address Updated successfully!!")
 
-      if(!forPass) {    
+      if(!forPass) {
         if(!IsOther)  dispatch(updateUser(data.res))
         setUser(p => ({...p, ...data.res}))
       }
@@ -103,7 +103,7 @@ const EditProifle = ({user, IsOther, setUser}) => {
 
   return (
     <Container>
-      <Section className={IsOther && "disabled"} >
+      <Section className={!user.isAdmin && "disabled"} >
         <Heading>Security Settings</Heading>
           <InputWrapper>
             <TextField name="currentPass" value={profileData.currentPass} onChange={handleProfileForm} fullWidth type="password" label="Current Password" />
@@ -117,7 +117,7 @@ const EditProifle = ({user, IsOther, setUser}) => {
           <StyledButton onClick={handleProfilechange} variant="contained">Change Password</StyledButton>
       </Section>
 
-      <Section>
+      <Section className={!user.isAdmin && "disabled"}>
         <Heading>Account Settings</Heading>
         <div className='row'>
             <TextField name="firstName" onChange={handleProfileForm} value={profileData?.firstName} fullWidth label="First Name" />
@@ -128,7 +128,7 @@ const EditProifle = ({user, IsOther, setUser}) => {
         <StyledButton onClick={() => handleProfilechange()} variant="contained">Update Profile</StyledButton>
       </Section>
 
-      <Section>
+      <Section className={!user.isAdmin && "disabled"}>
         <Heading>Address</Heading>
           <div  className='row'> 
             <TextField required fullWidth name='street' value={addressData.street} onChange={handleAddress} label="Street" />
