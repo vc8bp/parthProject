@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose"
 const { Schema } = mongoose;
 
   const OrderSchema = new Schema({
- 
     userID: { type: String, required: true },
+    agent: {type: String, required: true},   
     products: [
         {
             title: {type: String},
@@ -16,17 +16,9 @@ const { Schema } = mongoose;
         }
     ],
     price: {type: Number, required: true},
-    userInfo: {
-      address: {type: Object, required: true},
-      name: {type: String, required: true},
-      email: {type: String, required: true},
-    },   
     order: {type: Object, required: true},
     paymentStatus: {type: Boolean, default: false}
-  },{timestamps: true}
-  );
+  },{timestamps: true});
 
-
-
-module.exports = mongoose.model('Order',OrderSchema);
+export default mongoose.model('Order',OrderSchema);
   

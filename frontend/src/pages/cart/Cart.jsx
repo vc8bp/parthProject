@@ -278,7 +278,6 @@ function CartPage(props) {
     
     const user = useSelector(state => state?.user.info);
 
-    console.log({user})
 
 
     //get User Cart
@@ -367,6 +366,17 @@ function CartPage(props) {
         setischeckoutLoading(false) 
     }
 
+    const onSubmit = (agnetId) => {
+        console.log(agnetId)
+        (async () => {
+            try {
+                const {data} = await userRequest.post("/checkout", {agent})
+            } catch (error) {
+                console.log("Error")
+            }
+        })()
+    }
+
   return (
     <Container>
         <Wrapper>
@@ -435,7 +445,7 @@ function CartPage(props) {
             </>
             : <EmptyCartComponent/>)}
         </Wrapper>
-        <Checkout isOpen={isCheckoutOpen} setIsOpen={setIsCheckoutOpen} />
+        <Checkout isOpen={isCheckoutOpen} setIsOpen={setIsCheckoutOpen} submit={onSubmit} />
 
     </Container>
   )
